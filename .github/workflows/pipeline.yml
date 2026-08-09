@@ -35,24 +35,16 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Notify Discord of successful deployment
         if: ${{ success() && github.event_name == 'push' && !contains(join(github.event.commits.*.message, ','), '#skip') }}
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          severity: info
-          text: "🎉 New version of the Pokedex was deployed successfully!"
-          details: "Commit ${{ github.sha }} by ${{ github.actor }} deployed to production."
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d "$(jq -n --arg msg "🎉 New version of the Pokedex deployed successfully! Commit ${{ github.sha }} by ${{ github.actor }}." '{content: $msg}')" \
+            "${{ secrets.DISCORD_WEBHOOK }}"
       - name: Notify Discord of failed build
         if: failure()
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          severity: error
-          text: "🔥 Build failed!"
-          details: |
-            Commit: ${{ github.sha }}
-            Author: ${{ github.actor }}
-            Branch: ${{ github.ref_name }}
-            Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d "$(jq -n --arg msg "🔥 Build failed! Commit: ${{ github.sha }} | Author: ${{ github.actor }} | Branch: ${{ github.ref_name }} | Logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" '{content: $msg}')" \
+            "${{ secrets.DISCORD_WEBHOOK }}"
 
   tag_release:
     needs: [simple_deployment_pipeline]
