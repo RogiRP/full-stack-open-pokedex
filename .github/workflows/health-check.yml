@@ -1,9 +1,8 @@
 name: Periodic health check
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 6 * * *'
 
 jobs:
   health_check:
@@ -12,12 +11,12 @@ jobs:
       - name: Check application health
         uses: Jtalk/url-health-check-action@v4
         with:
-          url: https://pokedex-rogirp.onrender.com/url-que-no-existe
+          url: https://pokedex-rogirp.onrender.com/health
           max-attempts: 3
           retry-delay: 5s
       - name: Notify Discord of failed health check
         if: failure()
         run: |
           curl -X POST -H "Content-Type: application/json" \
-            -d "$(jq -n --arg msg "🚨 Health check failed! The Pokedex application at https://pokedex-rogirp.onrender.com/health is not responding correctly." '{content: $msg}')" \
+            -d "$(jq -n --arg msg " Health check failed! The Pokedex application at https://pokedex-rogirp.onrender.com/health is not responding correctly." '{content: $msg}')" \
             "${{ secrets.DISCORD_WEBHOOK }}"
