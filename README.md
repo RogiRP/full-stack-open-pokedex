@@ -16,3 +16,7 @@ Start by running `npm install` inside the project folder
 
 Prueba de pull request
 Prueba sin skip
+
+As required by the course, exercises 11.20 and 11.21 were done in a separate repository:
+
+https://github.com/RogiRP/samurai-directory
