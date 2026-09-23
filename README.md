@@ -1,22 +1,10 @@
-# Full Stack open CI/CD
+## Exercise repository
 
-This repository is used for the CI/CD module of the Full stack open course
+My deployed version of pokedex:
 
-Fork the repository to complete course exercises
+https://github.com/RogiRP/full-stack-open-pokedex
 
-## Commands
-
-Start by running `npm install` inside the project folder
-
-`npm start` to run the webpack dev server
-`npm test` to run tests
-`npm run eslint` to run eslint
-`npm run build` to make a production build
-`npm run start-prod` to run your production build
-
-Prueba de pull request
-Prueba sin skip
-
-As required by the course, exercises 11.20 and 11.21 were done in a separate repository:
+My own app CI/CD-pipeline, excercises 21 and 22:
 
 https://github.com/RogiRP/samurai-directory
+

@@ -37,13 +37,13 @@ jobs:
         if: ${{ success() && github.event_name == 'push' && !contains(join(github.event.commits.*.message, ','), '#skip') }}
         run: |
           curl -X POST -H "Content-Type: application/json" \
-            -d "$(jq -n --arg msg "🎉 New version of the Pokedex deployed successfully! Commit ${{ github.sha }} by ${{ github.actor }}." '{content: $msg}')" \
+            -d "$(jq -n --arg msg " New version of the Pokedex deployed successfully! Commit ${{ github.sha }} by ${{ github.actor }}." '{content: $msg}')" \
             "${{ secrets.DISCORD_WEBHOOK }}"
       - name: Notify Discord of failed build
         if: failure()
         run: |
           curl -X POST -H "Content-Type: application/json" \
-            -d "$(jq -n --arg msg "🔥 Build failed! Commit: ${{ github.sha }} | Author: ${{ github.actor }} | Branch: ${{ github.ref_name }} | Logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" '{content: $msg}')" \
+            -d "$(jq -n --arg msg " Build failed! Commit: ${{ github.sha }} | Author: ${{ github.actor }} | Branch: ${{ github.ref_name }} | Logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" '{content: $msg}')" \
             "${{ secrets.DISCORD_WEBHOOK }}"
 
   tag_release:
